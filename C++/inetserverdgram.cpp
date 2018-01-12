@@ -54,9 +54,9 @@ namespace libsocket
      * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
      * @param flags Flags for `socket(2)`
      */
-    inet_dgram_server::inet_dgram_server(const char* host, const char* port, int proto_osi3, int flags)
+    inet_dgram_server::inet_dgram_server(const char* host, const char* port, int proto_osi3, int flags, int socket_flags)
     {
-	setup(host,port,proto_osi3,flags);
+	setup(host,port,proto_osi3,flags,socket_flags);
     }
 
     /**
@@ -67,9 +67,9 @@ namespace libsocket
      * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
      * @param flags Flags for `socket(2)`
      */
-    inet_dgram_server::inet_dgram_server(const string& host, const string& port, int proto_osi3, int flags)
+    inet_dgram_server::inet_dgram_server(const string& host, const string& port, int proto_osi3, int flags, int socket_flags)
     {
-	setup(host,port,proto_osi3,flags);
+	setup(host,port,proto_osi3,flags,socket_flags);
     }
 
     /**
@@ -80,11 +80,11 @@ namespace libsocket
      * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
      * @param flags Flags for `socket(2)`
      */
-    void inet_dgram_server::setup(const char* bhost, const char* bport, int proto_osi3, int flags)
+    void inet_dgram_server::setup(const char* bhost, const char* bport, int proto_osi3, int flags, int socket_flags)
     {
 	// No separate call to get_address_family()
 
-	if ( -1 == (sfd = create_inet_server_socket(bhost,bport,LIBSOCKET_UDP,proto_osi3,flags)) )
+	if ( -1 == (sfd = create_inet_server_socket(bhost,bport,LIBSOCKET_UDP,proto_osi3,flags,socket_flags)) )
 	    throw socket_exception(__FILE__,__LINE__,"inet_dgram_server::inet_dgram_server() - could not create server socket!");
 
 	host = string(bhost);
@@ -100,8 +100,8 @@ namespace libsocket
      * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
      * @param flags Flags for `socket(2)`
      */
-    void inet_dgram_server::setup(const string& bhost, const string& bport, int proto_osi3, int flags)
+    void inet_dgram_server::setup(const string& bhost, const string& bport, int proto_osi3, int flags, int socket_flags)
     {
-	setup(bhost.c_str(),bport.c_str(),proto_osi3,flags);
+	setup(bhost.c_str(),bport.c_str(),proto_osi3,flags,socket_flags);
     }
 }

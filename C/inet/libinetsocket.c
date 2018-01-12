@@ -627,7 +627,7 @@ int shutdown_inet_stream_socket(int sfd, int method)
  * @retval <0 Something went wrong; for example, the addresses where garbage or the port was not free.
  */
 //		              Bind address	   Port			  TCP/UDP	   IPv4/6
-int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags)
+int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags, int socket_flags)
 {
     int sfd, domain, type, retval;
     struct addrinfo *result, *result_check, hints;
@@ -689,6 +689,12 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 
 	if ( sfd < 0 ) // Error at socket()!!!
 	    continue;
+
+      if(socket_flags) {
+        int enabled = 1;
+        setsockopt(sfd, SOL_SOCKET, socket_flags, &enabled, sizeof(int));
+        flags &= ~SO_REUSEADDR;
+      }
 
 	retval = bind(sfd,result_check->ai_addr,(socklen_t)result_check->ai_addrlen);
 
@@ -924,7 +930,7 @@ int create_multicast_socket(const char* group, const char* port, const char* if_
     memset(&hints,0,sizeof(hints));
     memset(&interface,0,sizeof(interface));
 
-    if ( -1 == check_error(sfd = create_inet_server_socket(group,port,LIBSOCKET_UDP,LIBSOCKET_BOTH,0)) )
+    if ( -1 == check_error(sfd = create_inet_server_socket(group,port,LIBSOCKET_UDP,LIBSOCKET_BOTH,0,0)) )
     {
         return -1;
     }

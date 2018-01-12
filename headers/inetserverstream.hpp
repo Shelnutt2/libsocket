@@ -55,11 +55,11 @@ namespace libsocket
 	public:
 
 	    inet_stream_server(void);
-	    inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
-	    inet_stream_server(const string& bindhost, const string& bindport, int proto_osi3, int flags=0);
+	    inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags=0, int socket_flags=0);
+	    inet_stream_server(const string& bindhost, const string& bindport, int proto_osi3, int flags=0, int socket_flags=0);
 
-	    void setup(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
-	    void setup(const string& bindhost, const string& bindport, int proto_osi3, int flags=0);
+	    void setup(const char* bindhost, const char* bindport, int proto_osi3, int flags=0, int socket_flags=0);
+	    void setup(const string& bindhost, const string& bindport, int proto_osi3, int flags=0, int socket_flags=0);
 
 	    inet_stream* accept(int numeric=0,int accept_flags=0);
             unique_ptr<inet_stream> accept2(int numeric=0, int accept_flags=0);
